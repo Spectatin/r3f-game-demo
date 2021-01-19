@@ -4,6 +4,7 @@ import { Canvas } from 'react-three-fiber';
 import { GameObjectLayer, GameObjectRef } from './GameObject';
 import { SceneExitEvent } from './Scene';
 import createPubSub, { PubSub } from './utils/createPubSub';
+// import * as THREE from 'three';
 
 export type GameObjectRegistry<T = GameObjectRef> = Map<symbol | string, T>;
 
@@ -155,8 +156,9 @@ export default function Game({
                 }}
                 orthographic
                 noEvents
-                gl2
+                // gl2
                 // @ts-ignore
+                colorManagement
                 gl={{ antialias: false }}
                 onContextMenu={e => e.preventDefault()}
             >

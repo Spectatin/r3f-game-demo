@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
+import { Html } from '@react-three/drei';
 import Collider from '../@core/Collider';
 import GameObject from '../@core/GameObject';
 import Interactable from '../@core/Interactable';
@@ -11,17 +12,35 @@ import PizzaPickup from '../entities/PizzaPickup';
 import Plant from '../entities/Plant';
 import Player from '../entities/Player';
 import Workstation from '../entities/Workstation';
+import TackboardL from '../entities/TackboardL';
+import TackboardR from '../entities/TackboardR';
 import spriteData from '../spriteData';
 
+// const mapData = mapDataString(`
+// # # # # # # t y # # # # # # # # #
+// # · W T # T · · W T · W · · · T #
+// # · · · · · · · · · · · · · · o ·
+// # o · · # · · · # # # # · · # # #
+// # # # # # · · · # W o W · · T W #
+// # C C C # · · · T · · · · · · · #
+// # o · · · · · · · · · · · · · o #
+// # # # # # # # # # # # # # # # # #
+// `);
+// const mapData = mapDataString(`
+// # # t y # #
+// # · · · · #
+// # · · · · #
+// # · · · · #
+// # # # # # #
+// `);
 const mapData = mapDataString(`
-# # # # # # # # # # # # # # # # #
-# · W T # T · · W T · W · · · T #
-# · · · · · · · · · · · · · · o ·
-# o · · # · · · # # # # · · # # #
-# # # # # · · · # W o W · · T W #
-# C C C # · · · T · · · · · · · #
-# o · · · · · · · · · · · · · o #
-# # # # # # # # # # # # # # # # #
+# # t y # #
+# · · · · #
+# · · · · #
+# · · · · #
+# · · · · #
+# · · · · #
+# # # # # #
 `);
 
 const resolveMapTile: TileMapResolver = (type, x, y) => {
@@ -72,6 +91,36 @@ const resolveMapTile: TileMapResolver = (type, x, y) => {
                     <Plant {...position} />
                 </Fragment>
             );
+        case 't':
+            return (
+                <Fragment key={key}>
+                    <GameObject key={key} {...position} layer="wall">
+                        <Collider />
+                        <Sprite {...spriteData.objects} state="wall" />
+                    </GameObject>
+                    <TackboardL {...position} />
+                </Fragment>
+            );
+        case 'y':
+            return (
+                <Fragment key={key}>
+                    <GameObject key={key} {...position} layer="wall">
+                        <Collider />
+                        <Sprite {...spriteData.objects} state="wall" />
+                    </GameObject>
+                    <TackboardR {...position} />
+                </Fragment>
+            );
+        case 'z':
+            return (
+                <Fragment key={key}>
+                    <Html scaleFactor={10}>
+                        <div className="content">
+                            Suspense <br />
+                        </div>
+                    </Html>
+                </Fragment>
+            );
         default:
             return null;
     }
@@ -81,15 +130,29 @@ export default function OfficeScene() {
     return (
         <>
             <GameObject name="map">
-                <ambientLight />
-                <TileMap data={mapData} resolver={resolveMapTile} definesMapSize />
+                <ambientLight intensity={0.01} />
+                <spotLight
+                    // color="blue"
+                    intensity={0.25}
+                    // angle={-Math.PI / 2}
+                    penumbra={1}
+                    position={[2, 4, 20]}
+                    // castShadow
+                    // shadowBias={-0.0001}
+                />
+                <Suspense fallback={null}>
+                    <TileMap data={mapData} resolver={resolveMapTile} definesMapSize />
+                </Suspense>
+                {/* <pointLight position={[0, 0, 50]} intensity={0.1} /> */}
+                {/* <ambientLight /> */}
+                {/* <TileMap data={mapData} resolver={resolveMapTile} definesMapSize /> */}
             </GameObject>
             <GameObject x={16} y={5}>
                 <Collider />
                 <Interactable />
-                <ScenePortal name="exit" enterDirection={[-1, 0]} target="other/start" />
+                <ScenePortal name="exit" enterDirection={[-1, 0]} target="lan/start" />
             </GameObject>
-            <Player x={6} y={3} />
+            <Player x={2} y={2} />
         </>
     );
 }

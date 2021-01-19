@@ -21,5 +21,25 @@ export default function globalStyles() {
             color: white;
             background: black;
         }
+        .content {
+            padding-top: 10px;
+            transform: translate3d(50%, 0, 0);
+            text-align: left;
+            background: pink;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .contenty {
+            padding-top: 10px;
+            transform: translate3d(50%, 0, 0);
+            text-align: left;
+            background: white;
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            // height: 200px;
+            width: 240px;
+        }
     `;
 }

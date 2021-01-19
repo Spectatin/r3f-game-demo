@@ -7,6 +7,7 @@ import SceneManager from './@core/SceneManager';
 import useWindowSize from './@core/useWindowSize';
 import OfficeScene from './scenes/OfficeScene';
 import OtherScene from './scenes/OtherScene';
+import LanScene from './scenes/LanScene';
 import soundData from './soundData';
 import spriteData from './spriteData';
 import globalStyles from './styles/global';
@@ -27,8 +28,26 @@ const urls = [
     // flatten
 ].reduce<string[]>((acc, val) => acc.concat(val), []);
 
+declare global {
+    interface Window {
+        location: Location;
+        analytics: any;
+    }
+}
+
+const init = () => {
+    // eslint-disable-next-line no-console
+    console.log(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
+    // eslint-disable-next-line no-console
+    const ajsAnonymousId = searchParams.get('ajs_anonymous_id');
+    window.analytics.track('page viewed', {}, { anonymousId: ajsAnonymousId });
+};
+
 export default function App() {
     const [width, height] = useWindowSize();
+
+    init();
 
     return (
         <>
@@ -42,6 +61,9 @@ export default function App() {
                             </Scene>
                             <Scene id="other">
                                 <OtherScene />
+                            </Scene>
+                            <Scene id="lan">
+                                <LanScene />
                             </Scene>
                         </SceneManager>
                     </AssetLoader>

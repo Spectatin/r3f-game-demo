@@ -56,6 +56,15 @@ const spriteData: { [index: string]: SpriteProps } = {
         opacity: 0.75,
         frameTime: 150,
     },
+    interiors: {
+        src: './assets/interiors/Interiors_free_16x16.png',
+        frameWidth: 16,
+        frameHeight: 16,
+        sheet: {
+            'tackboard-l': [[0, 2]],
+            'tackboard-r': [[1, 2]],
+        },
+    },
 };
 
 export default spriteData;
